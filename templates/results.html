@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Recommendations - Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .results-table th {
+            background-color: #f1f1f1;
+            font-size: 18px;
+        }
+
+        .results-table td {
+            font-size: 16px;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .back-button:hover {
+            color: #0056b3;
+        }
+
+        .no-results {
+            text-align: center;
+            font-size: 24px;
+            color: #ff0000;
+        }
+
+        .results-heading {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Laptop Recommendations</h1>
+    <p>Your personalized laptop search results</p>
+</header>
+
+<div class="container">
+    <div class="results-heading">
+        <h2>We found the following laptops for you:</h2>
+    </div>
+
+    {% if results %}
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Product</th>
+                    <th>Ram (GB)</th>
+                    <th>CPU Model</th>
+                    <th>Price (€)</th>
+              
+                    <th>GPU Model</th>
+                    <th>Primary Storage</th>
+                    <th>OS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for laptop in results %}
+                    <tr>
+                        <td>{{ laptop['Company'] }}</td>
+                        <td>{{ laptop['Product'] }}</td>
+                        <td>{{ laptop['Ram'] }}</td>
+                        <td>{{ laptop['CPU_model'] }}</td>
+                        <td>{{ laptop['Price_euros'] }}</td>
+                     
+                        <td>{{ laptop['GPU_model'] }}</td>
+                        <td>{{ laptop['PrimaryStorage'] }}</td>
+                        <td>{{ laptop['OS'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="no-results">
+            <p>No laptops found based on the given criteria.</p>
+        </div>
+    {% endif %}
+
+    <a href="/" class="back-button">Back to Search</a>
+</div>
+
+</body>
+</html>

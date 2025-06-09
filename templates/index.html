@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Recommendation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #6495ED; /* Purple base color */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .start-button {
+            background-color: #6495ED; /* Warm red accent */
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-button:hover {
+            background-color: #1a5276;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .form-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-container h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #6495ED; /* Purple submit button */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 10px;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #1a5276;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .results-table th {
+            background-color: #f1f1f1;
+            font-size: 18px;
+        }
+
+        .results-table td {
+            font-size: 16px;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #6495ED;
+        }
+
+        .back-button:hover {
+            color: #6495ED;
+        }
+
+        .modes-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .mode {
+            width: 48%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .mode h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #000000; /* Purple title */
+        }
+
+        .mode form {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .mode form input[type="text"],
+        .mode form input[type="number"],
+        .mode form select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .company-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .show-all-btn {
+            background-color: #1a5276 ;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .show-all-btn:hover {
+            background-color: #154360 ;
+        }
+
+        .dropdown-container {
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .dropdown-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-list li {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-list li:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Laptop Recommendation System</h1>
+    <p>Find the best laptop based on your needs!</p>
+</header>
+
+<div class="container">
+    <button class="start-button" onclick="showForms()">Commencer les prédictions</button>
+
+    <div class="modes-container">
+
+        <!-- Mode 1: Enter specs to predict price -->
+        <div class="mode form-container" id="mode1">
+            <h3>Mode 1: Enter Specifications</h3>
+            <form method="POST" action="/mode1">
+                <div class="form-group">
+                    <label for="companyInput">Company</label>
+                    <input type="text" id="companyInput" name="Company" placeholder="Search or select a brand..." class="company-input" autocomplete="off" required>
+                    <button type="button" onclick="toggleDropdown()" class="show-all-btn">Afficher toutes les marques</button>
+                    <div id="dropdownContainer" class="dropdown-container">
+                        <ul id="companyList" class="dropdown-list"></ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Product">Laptop Model</label>
+                    <input type="text" id="Product" name="Product" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Ram">RAM (GB)</label>
+                    <input type="number" id="Ram" name="Ram" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="CPU_model">CPU Model</label>
+                    <input type="text" id="CPU_model" name="CPU_model" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="CPU_company">CPU Company</label>
+                    <input type="text" id="CPU_company" name="CPU_company" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="CPU_freq">CPU Frequency (GHz)</label>
+                    <input type="number" step="0.1" id="CPU_freq" name="CPU_freq" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ScreenH">ScreenH (pixel)</label>
+                    <input type="number" step="100" id="ScreenH" name="ScreenH" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ScreenW">ScreenW (pixel)</label>
+                    <input type="number" step="100" id="ScreenW" name="ScreenW" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="PrimaryStorage">PrimaryStorage</label>
+                    <input type="number"  id="PrimaryStorage" name="PrimaryStorage" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="GPU_company">GPU Company</label>
+                    <input type="text" id="GPU_company" name="GPU_company" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="GPU_model">GPU Model</label>
+                    <input type="text" id="GPU_model" name="GPU_model" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Inches">Screen Size (inches)</label>
+                    <input type="number" step="0.1" id="Inches" name="Inches" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="OS">Operating System</label>
+                    <input type="text" id="OS" name="OS" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="PrimaryStorageType">Primary Storage Type</label>
+                    <input type="text" id="PrimaryStorageType" name="PrimaryStorageType" >
+                </div>
+
+                <div class="form-group">
+                    <label for="Touchscreen">Touchscreen (Yes/No)</label>
+                    <select id="Touchscreen" name="Touchscreen" required>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="RetinaDisplay">Retina Display (Yes/No)</label>
+                    <select id="RetinaDisplay" name="RetinaDisplay" required>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Predict Price & Recommend">
+                </div>
+            </form>
+        </div>
+
+        <!-- Mode 2: Enter price range -->
+        <div class="mode form-container" id="mode2">
+            <h3>Mode 2: Enter Price Range</h3>
+            <form method="POST" action="/mode2">
+                <div class="form-group">
+                    <label for="MinPrice">Min Price (€)</label>
+                    <input type="number" id="MinPrice" name="MinPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="MaxPrice">Max Price (€)</label>
+                    <input type="number" id="MaxPrice" name="MaxPrice" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Find Laptops">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show forms with animation when the "Commencer les prédictions" button is clicked
+    function showForms() {
+        document.getElementById("mode1").classList.add("show");
+        document.getElementById("mode2").classList.add("show");
+    }
+
+    const brands = ["Dell", "HP", "Lenovo", "Acer", "Asus", "Apple", "MSI", "Razer", "Samsung"];
+
+    function toggleDropdown() {
+        const dropdownContainer = document.getElementById('dropdownContainer');
+        dropdownContainer.style.display = dropdownContainer.style.display === 'none' ? 'block' : 'none';
+        const companyList = document.getElementById('companyList');
+        companyList.innerHTML = '';
+        brands.forEach(brand => {
+            const li = document.createElement('li');
+            li.textContent = brand;
+            li.onclick = function () {
+                document.getElementById('companyInput').value = brand;
+                dropdownContainer.style.display = 'none';
+            };
+            companyList.appendChild(li);
+        });
+    }
+    
+</script>
+
+</body>
+</html>

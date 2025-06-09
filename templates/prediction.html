@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #74ebd5; /* Couleur principale */
+      --secondary-color: #2471a3; /* Couleur secondaire pour gradient */
+    }
+    body {
+      background: linear-gradient(135deg, #ece9e6, #ffffff);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 1000px;
+      width: 95%;
+      margin: 20px;
+      animation: fadeIn 1s ease-out;
+    }
+    .left, .right {
+      padding: 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .left {
+      background: #fff;
+      color: #333;
+      animation: slideLeft 1s ease-out forwards;
+      border-right: 2px solid #eee;
+    }
+    .right {
+      background: linear-gradient(135deg, var(--main-color), var(--secondary-color));
+      color: #fff;
+      animation: slideRight 1s ease-out forwards;
+    }
+    h1, h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: 2.2em;
+    }
+    h2 {
+      font-size: 2em;
+    }
+    p {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+    .feature-list {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .price {
+      font-size: 2em;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin-top: 20px;
+      text-align: center;
+    }
+    .btn-back {
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      align-self: center;
+    }
+    .btn-back:hover {
+      transform: scale(1.05);
+    }
+    @keyframes slideLeft {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideRight {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Left Part: Prediction -->
+    <div class="left">
+      <h1>Your Predicted Laptop</h1>
+
+      <div class="feature-list">
+        {% for key, value in features.items() %}
+          <p><strong>{{ key }}:</strong> {{ value }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="price">
+        Predicted Price: {{ predicted_price | round(2) }} €
+      </div>
+
+      <a href="/" class="btn-back">Back to Home</a>
+    </div>
+
+    <!-- Right Part: Model Performance -->
+    <div class="right">
+      <h2>Model Performance</h2>
+      <p><strong>MSE:</strong> {{ mae }}</p>
+      <p><strong>MAE:</strong> {{ mse }}</p>
+      <p><strong>R² Score:</strong> {{ rscore }}</p>
+    </div>
+  </div>
+
+</body>
+</html>
